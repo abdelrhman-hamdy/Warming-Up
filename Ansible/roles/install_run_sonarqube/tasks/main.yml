@@ -1,0 +1,43 @@
+- name: Install Openjdk-17-jre
+  ansible.builtin.apt:
+    name: openjdk-17-jre
+    state: present
+
+- name: Install unzip
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+- name: Extract sonarqube.zip 
+  ansible.builtin.unarchive:
+    src: "https://binaries.sonarsource.com/Distribution/sonarqube/sonarqube-10.1.0.73491.zip"
+    dest: /opt/
+    remote_src: yes
+
+- name: Add a system-user "sonar"
+  ansible.builtin.user:
+    name: sonar
+    comment: system user for SonarQube
+    system : yes
+
+- name : Copy sonar.service 
+  copy: 
+    src: sonar.service 
+    dest: /etc/systemd/system/sonar.service
+
+- name: Recursively change ownership of the SonarQube directory
+  ansible.builtin.file:
+    path: /opt/sonarqube-10.1.0.73491
+    owner: sonar
+    group: sonar
+    state: directory
+    recurse: yes
+    
+- name: reload systemctl, then enable and start the sonar service
+  ansible.builtin.systemd:
+    state: started
+    daemon_reload: true
+    enabled: true
+    name: sonar.service
+
+
+
