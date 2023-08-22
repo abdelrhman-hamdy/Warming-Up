@@ -13,13 +13,18 @@ stages:
   jobs: 
   - job : InstallNodeTool
     steps:
-     -  task: NodeTool@0
+      -  task: NodeTool@0
+         inputs:
+            versionSpec: '14.x'
+      - task: Npm@1
         inputs:
-          versionSpec: '14.x'
-     - script: |
-         cd app/
-         npm install
-         npm run build
+          command: 'install'
+          workingDir: 'app'
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: 'app'
+          customCommand: 'run build'
 
         
 
