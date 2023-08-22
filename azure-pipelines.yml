@@ -16,10 +16,14 @@ stages:
       -  task: NodeTool@0
          inputs:
             versionSpec: '14.x'
+  - job : InstallDepencies
+    steps:
       - task: Npm@1
         inputs:
           command: 'install'
           workingDir: 'app'
+  - job : BuildTheApplication
+    steps:
       - task: Npm@1
         inputs:
           command: 'custom'
