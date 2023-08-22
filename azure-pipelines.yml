@@ -17,6 +17,7 @@ stages:
         inputs:
           versionSpec: '12.x'
      - script: |
+         cd app/
          npm install
          npm run build
 
