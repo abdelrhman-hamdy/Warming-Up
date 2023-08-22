@@ -11,6 +11,11 @@ pool: Azure Pipelines
 stages: 
 - stage: BuildApp
   jobs: 
+  - job : InstallNodeTool
+    steps:
+     -  task: NodeTool@0
+        inputs:
+          versionSpec: '14.x'
   - job : InstallDependncies
     steps:
       - task: Npm@1
