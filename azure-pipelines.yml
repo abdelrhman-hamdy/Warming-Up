@@ -47,15 +47,14 @@ stages:
   jobs : 
   - job : RunSonarqube
     steps:
+   
     - task: SonarQubePrepare@5
       inputs:
-        SonarQube: 'sonarqube'
         scannerMode: 'CLI'
         configMode: 'manual'
         cliProjectKey: 'react'
         cliProjectName: 'react'
-        cliSources: 'app'
-    
+        cliSources: '.'
     - task: SonarQubeAnalyze@5
       inputs:
         jdkversion: 'JAVA_HOME_11_X64'
