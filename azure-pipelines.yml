@@ -9,15 +9,15 @@ trigger:
 pool: default
 
 stages: 
-- stage: Build the app
+- stage: BuildApp
   jobs: 
-  - job : install Dependncies
+  - job : InstallDependncies
     steps:
       - task: Npm@1
         inputs:
           command: 'install'
           workingDir: '/app'
-  - job : Build the Application
+  - job : BuildApplication
     steps:
       - task: Npm@1
         inputs:
