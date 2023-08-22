@@ -15,17 +15,11 @@ stages:
     steps:
      -  task: NodeTool@0
         inputs:
-          versionSpec: '14.x'
-  - job : InstallDependncies
-    steps:
-      - task: Npm@1
-        inputs:
-          command: 'install'
-          workingDir: 'app/'
-      - task: Npm@1
-        inputs:
-          command: 'custom'
-          workingDir: 'app/'
-          customCommand: 'run build'
+          versionSpec: '8.5.1'
+     - script: |
+         npm install
+         npm run build
+
+        
 
 
