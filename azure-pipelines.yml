@@ -23,5 +23,5 @@ stages:
         inputs:
           command: 'custom'
           workingDir: 'app/'
-          customCommand: 'npm run build'
+          customCommand: 'run build'
 
