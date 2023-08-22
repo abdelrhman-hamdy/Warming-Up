@@ -43,6 +43,26 @@ stages:
           workingDir: 'app'
           customCommand: 'run test'
 
+- stage : StaticCodeAnalysis
+  jobs : 
+  - job : RunSonarqube
+    steps:
+
+      - task: SonarQubePrepare@5
+        inputs:
+          SonarQube: 'sonarqube'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: 'react'
+          cliProjectName: 'react'
+          cliSources: 'app'
+      - task: SonarQubeAnalyze@5
+        inputs:
+          jdkversion: 'JAVA_HOME_11_X64'
+    
+      - task: SonarQubePublish@5
+        inputs:
+           pollingTimeoutSec: '300'
+
+
         
-
-
