@@ -17,11 +17,10 @@ stages:
         inputs:
           command: 'install'
           workingDir: 'app/'
-  - job : BuildApplication
-    steps:
       - task: Npm@1
         inputs:
           command: 'custom'
           workingDir: 'app/'
           customCommand: 'run build'
+
 
