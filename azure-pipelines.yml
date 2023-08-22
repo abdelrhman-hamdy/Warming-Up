@@ -8,11 +8,20 @@ trigger:
 
 pool: default
 
-steps:
-- script: echo Hello, world!
-  displayName: 'Run a one-line script'
+stages: 
+- stage: Build the app
+  jobs: 
+  - job : install Dependncies
+    steps:
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          workingDir: '/app'
+  - job : Build the Application
+    steps:
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: '/app'
+          customCommand: 'npm run build'
 
-- script: |
-    echo Add other tasks to build, test, and deploy your project.
-    echo See https://aka.ms/yaml
-  displayName: 'Run a multi-line script'
