@@ -68,4 +68,15 @@ stages:
     - task: SonarQubePublish@5
       inputs:
          pollingTimeoutSec: '300'
+    
+- stage : BuildDockerImage
+  jobs : 
+  - job : BuildDockerImage
+    steps:
+    - task: Docker@2
+      inputs:
+        containerRegistry: 'docker-jfrog'
+        repository: 'docker-local-ADO'
+        command: 'buildAndPush'
+        Dockerfile: 'app/Dockerfile'
       
