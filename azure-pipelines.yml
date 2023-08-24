@@ -68,40 +68,40 @@ stages:
     - task: SonarQubePublish@5
       inputs:
          pollingTimeoutSec: '300'
-    
-- stage : UploadArtifact 
+
+- stage : BuildPushDockerImage
   jobs : 
-  - job : UploadArtifact
+  - job : BuildPushDockerImage
     steps:
-      -  task: NodeTool@0
-         inputs:
-            versionSpec: '12.x'
-      - task: Npm@1
+      - task: Docker@2
         inputs:
-          command: 'install'
-          workingDir: 'app'
-      - task: Npm@1
-        inputs:
-          command: 'custom'
-          workingDir: 'app'
-          customCommand: 'run build'
+          containerRegistry: 'DockerHub'
+          repository: 'React'
+          command: 'buildAndPush'
+          Dockerfile: 'app/Dockerfile'
+
       
-      - task: ArchiveFiles@2
-        inputs:
-          rootFolderOrFile: 'app'
-          includeRootFolder: false
-          archiveType: 'zip'
-          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          replaceExistingArchive: true 
+#- stage : UploadArtifact 
+#  jobs : 
+#  - job : UploadArtifact
+#    steps:
+#      - task: ArchiveFiles@2
+#        inputs:
+#          rootFolderOrFile: 'app'
+#          includeRootFolder: false
+#          archiveType: 'zip'
+#          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+#          replaceExistingArchive: true 
+
 
      # - script : |
       #  curl -u $(JFROGUSER):$(JFROGPASS) -T $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip "http://34.207.61.89:8081/artifactory/docker-local-ADO/app"
 
-      - task: cURLUploader@2
-        inputs:
-          files: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-          authType: 'UserAndPass'
-          username: '$(JfrogUser)'
-          password: '$(JfrogPass)'
-          url: 'http://34.207.61.89:8081/artifactory/docker-local-ADO/app:$(Build.BuildId).zip'
-          remotePath: 
+#      - task: cURLUploader@2
+#        inputs:
+#          files: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+#          authType: 'UserAndPass'
+#          username: '$(JfrogUser)'
+#          password: '$(JfrogPass)'
+#          url: 'http://34.207.61.89:8081/artifactory/docker-local-ADO/app:$(Build.BuildId).zip'
+#          remotePath: 
