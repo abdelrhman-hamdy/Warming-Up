@@ -8,7 +8,7 @@ trigger:
 
 pool: Azure Pipelines
 
-
+stages: 
 - stage : BuildPushDockerImage
   jobs : 
   - job : BuildPushDockerImage
@@ -20,7 +20,7 @@ pool: Azure Pipelines
           command: 'buildAndPush'
           Dockerfile: 'app/Dockerfile'
 
-stages: 
+
 - stage: BuildApp
   jobs: 
   - job : BuildTheApplication
