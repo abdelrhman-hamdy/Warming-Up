@@ -1,0 +1,26 @@
+- name: Install Java
+  ansible.builtin.apt:
+    name: java-1.8*
+    state: present
+
+- name: Install unzip
+  ansible.builtin.apt:
+    name: unzip
+    state: present
+
+- name: Extract Jfrog.zip
+  ansible.builtin.unarchive:
+    src: "https://jfrog.bintray.com/artifactory/jfrog-artifactory-oss-6.9.6.zip"
+    dest: /opt/
+    remote_src: yes
+
+
+- name : run Jfrog
+  become: true
+  shell: |
+    cd /opt/jfrog-artifactory-oss-6.9.6/bin
+    ./artifactory.sh start
+    
+
+
+
