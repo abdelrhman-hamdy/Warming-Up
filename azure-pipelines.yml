@@ -88,7 +88,7 @@ stages:
       
       - task: ArchiveFiles@2
         inputs:
-          rootFolderOrFile: 'app/dist'
+          rootFolderOrFile: 'app'
           includeRootFolder: false
           archiveType: 'zip'
           archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
@@ -103,5 +103,5 @@ stages:
           authType: 'UserAndPass'
           username: '$(JfrogUser)'
           password: '$(JfrogPass)'
-          url: 'http://34.207.61.89:8081/artifactory/docker-local-ADO/app.zip'
+          url: 'http://34.207.61.89:8081/artifactory/docker-local-ADO/app:$(Build.BuildId).zip'
           remotePath: 
