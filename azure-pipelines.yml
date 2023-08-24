@@ -43,6 +43,17 @@ stages:
           workingDir: 'app'
           customCommand: 'run test'
 
+- stage : BuildPushDockerImage
+  jobs : 
+  - job : BuildPushDockerImage
+    steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'DockerHub'
+          repository: 'React'
+          command: 'buildAndPush'
+          Dockerfile: 'app/Dockerfile'
+ 
 - stage : StaticCodeAnalysis
   jobs : 
   - job : RunSonarqube
@@ -69,16 +80,7 @@ stages:
       inputs:
          pollingTimeoutSec: '300'
 
-- stage : BuildPushDockerImage
-  jobs : 
-  - job : BuildPushDockerImage
-    steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'DockerHub'
-          repository: 'React'
-          command: 'buildAndPush'
-          Dockerfile: 'app/Dockerfile'
+
 
       
 #- stage : UploadArtifact 
