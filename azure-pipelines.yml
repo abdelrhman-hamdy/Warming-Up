@@ -8,6 +8,18 @@ trigger:
 
 pool: Azure Pipelines
 
+
+- stage : BuildPushDockerImage
+  jobs : 
+  - job : BuildPushDockerImage
+    steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'DockerHub'
+          repository: 'abdelrhmanhamdy/react'
+          command: 'buildAndPush'
+          Dockerfile: 'app/Dockerfile'
+
 stages: 
 - stage: BuildApp
   jobs: 
@@ -43,16 +55,7 @@ stages:
           workingDir: 'app'
           customCommand: 'run test'
 
-- stage : BuildPushDockerImage
-  jobs : 
-  - job : BuildPushDockerImage
-    steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'DockerHub'
-          repository: 'React'
-          command: 'buildAndPush'
-          Dockerfile: 'app/Dockerfile'
+
  
 - stage : StaticCodeAnalysis
   jobs : 
