@@ -26,36 +26,49 @@ filter {
  
    }
 
-#module "SonarQubeServer" {
-#  source = "../modules/SonarQube"
-#  ami= data.aws_ami.ubuntu.id
-#  #"ami-09cd747c78a9add63"
-#  itype = "t2.medium"
-#  publicip = true
-#  keyname = "hamdy_key"
-#  secgroupname = "SonarQubeSecGroup"
-#  EC2name=  "SonarQubeServer" 
-#}
-
-
-module "AzureAgent" {
-  source = "../modules/AzureAgent"
+module "SonarQubeServer" {
+  source = "../modules/SonarQube"
   ami= data.aws_ami.ubuntu.id
-  itype = "t2.micro"
+  #"ami-09cd747c78a9add63"
+  itype = "t2.medium"
   publicip = true
   keyname = "hamdy_key"
-  secgroupname = "AzureSecGroup"
-  EC2name=  "AzureAgentServer" 
+  secgroupname = "SonarQubeSecGroup"
+  EC2name=  "SonarQubeServer"
 }
 
-/*
+
+#module "AzureAgent" {
+#  source = "../modules/AzureAgent"
+#  ami= data.aws_ami.ubuntu.id
+#  itype = "t2.micro"
+#  publicip = true
+#  keyname = "hamdy_key"
+#  secgroupname = "AzureSecGroup"
+#  EC2name=  "AzureAgentServer"
+#}
+
+module "Jfrog" {
+  source = "../modules/Jfrog"
+  ami= data.aws_ami.ubuntu.id
+  itype = "t2.small"
+  publicip = true
+  keyname = "hamdy_key"
+  secgroupname = "JfrogSecGroup"
+  EC2name=  "JfrogServer"
+}
+
+
+
+
 output "SonarQubeServer" {
   value = module.SonarQubeServer.SonarQubeServer.public_ip
 }
-*/
-output "AzureAgent" {
-  value = module.AzureAgent.AzureAgentServer.public_ip
-}
+
+
+#output "AzureAgent" {
+#  value = module.AzureAgent.AzureAgentServer.public_ip
+#}
 
 
 
