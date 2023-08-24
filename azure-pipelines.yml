@@ -69,14 +69,39 @@ stages:
       inputs:
          pollingTimeoutSec: '300'
     
-- stage : BuildDockerImage
+- stage : UploadArtifact 
   jobs : 
-  - job : BuildDockerImage
+  - job : UploadArtifact
     steps:
-    - task: Docker@2
-      inputs:
-        containerRegistry: 'docker-jfrog'
-        repository: 'docker-local-ADO'
-        command: 'buildAndPush'
-        Dockerfile: 'app/Dockerfile'
+      -  task: NodeTool@0
+         inputs:
+            versionSpec: '12.x'
+      - task: Npm@1
+        inputs:
+          command: 'install'
+          workingDir: 'app'
+      - task: Npm@1
+        inputs:
+          command: 'custom'
+          workingDir: 'app'
+          customCommand: 'run build'
       
+      - task: ArchiveFiles@2
+        inputs:
+          rootFolderOrFile: 'app/dist'
+          includeRootFolder: false
+          archiveType: 'zip'
+          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          replaceExistingArchive: true 
+
+     # - script : |
+      #  curl -u $(JFROGUSER):$(JFROGPASS) -T $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip "http://34.207.61.89:8081/artifactory/docker-local-ADO/app"
+
+      - task: cURLUploader@2
+        inputs:
+          files: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
+          authType: 'UserAndPass'
+          username: '$(JfrogUser)'
+          password: '$(JfrogPass)'
+          url: 'http://34.207.61.89:8081/artifactory/docker-local-ADO/app.zip'
+          remotePath: 
