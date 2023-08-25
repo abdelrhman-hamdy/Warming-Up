@@ -9,17 +9,6 @@ trigger:
 pool: Azure Pipelines
 
 stages: 
-- stage : BuildPushDockerImage
-  jobs : 
-  - job : BuildPushDockerImage
-    steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'DockerHub'
-          repository: 'abdelrhmanhamdy/react'
-          command: 'buildAndPush'
-          Dockerfile: 'app/Dockerfile'
-
 
 - stage: BuildApp
   jobs: 
@@ -84,29 +73,13 @@ stages:
          pollingTimeoutSec: '300'
 
 
-
-      
-#- stage : UploadArtifact 
-#  jobs : 
-#  - job : UploadArtifact
-#    steps:
-#      - task: ArchiveFiles@2
-#        inputs:
-#          rootFolderOrFile: 'app'
-#          includeRootFolder: false
-#          archiveType: 'zip'
-#          archiveFile: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-#          replaceExistingArchive: true 
-
-
-     # - script : |
-      #  curl -u $(JFROGUSER):$(JFROGPASS) -T $(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip "http://34.207.61.89:8081/artifactory/docker-local-ADO/app"
-
-#      - task: cURLUploader@2
-#        inputs:
-#          files: '$(Build.ArtifactStagingDirectory)/$(Build.BuildId).zip'
-#          authType: 'UserAndPass'
-#          username: '$(JfrogUser)'
-#          password: '$(JfrogPass)'
-#          url: 'http://34.207.61.89:8081/artifactory/docker-local-ADO/app:$(Build.BuildId).zip'
-#          remotePath: 
+- stage : BuildPushDockerImage
+  jobs : 
+  - job : BuildPushDockerImage
+    steps:
+      - task: Docker@2
+        inputs:
+          containerRegistry: 'DockerHub'
+          repository: 'abdelrhmanhamdy/react'
+          command: 'buildAndPush'
+          Dockerfile: 'app/Dockerfile'
