@@ -44,40 +44,34 @@ stages:
           workingDir: 'app'
           customCommand: 'run test --cov'
 
-
- 
-- stage : StaticCodeAnalysis
-  jobs : 
-  - job : RunSonarqube
-    steps:
    
-    - task: SonarQubePrepare@5
-      inputs:
-        SonarQube: 'sonarqube'
-        scannerMode: 'CLI'
-        configMode: 'manual'
-        cliProjectKey: 'test-coverage'
-        cliProjectName: 'test-coverage'
-        cliSources: 'app/src'
-        extraProperties: |
-           Additional properties that will be passed to the scanner, 
-           Put one key=value per line, example:
-           sonar.exclusions=**/*.bin
-           sonar.javascript.lcov.reportPaths=app/coverage/lcov.info
-
-    - script: |
-        FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
-        echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
-      displayName: Filter out non-CE sonar parameters
-    - task: SonarQubeAnalyze@5
-      inputs:
-        jdkversion: 'JAVA_HOME_11_X64'
+      - task: SonarQubePrepare@5
+        inputs:
+          SonarQube: 'sonarqube'
+          scannerMode: 'CLI'
+          configMode: 'manual'
+          cliProjectKey: 'test-coverage'
+          cliProjectName: 'test-coverage'
+          cliSources: 'app/src'
+          extraProperties: |
+             Additional properties that will be passed to the scanner, 
+             Put one key=value per line, example:
+             sonar.exclusions=**/*.bin
+             sonar.javascript.lcov.reportPaths=app/coverage/lcov.info
   
-    - task: SonarQubePublish@5
-      inputs:
-         pollingTimeoutSec: '300'
-
-
+      - script: |
+          FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
+          echo "##vso[task.setvariable variable=SONARQUBE_SCANNER_PARAMS]$FILTERED_PARAMS"
+        displayName: Filter out non-CE sonar parameters
+      - task: SonarQubeAnalyze@5
+        inputs:
+          jdkversion: 'JAVA_HOME_11_X64'
+    
+      - task: SonarQubePublish@5
+        inputs:
+           pollingTimeoutSec: '300'
+  
+  
 - stage : BuildPushDockerImage
   jobs : 
   - job : BuildPushDockerImage
