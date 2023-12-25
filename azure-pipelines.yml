@@ -57,7 +57,7 @@ stages:
              Additional properties that will be passed to the scanner, 
              Put one key=value per line, example:
              sonar.exclusions=**/*.bin
-             sonar.javascript.lcov.reportPaths=app/coverage/lcov.info
+             sonar.javascript.lcov.reportPaths=$(Build.SourcesDirectory)/app/coverage/lcov.info
   
       - script: |
           FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
