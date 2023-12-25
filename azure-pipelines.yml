@@ -10,22 +10,22 @@ pool: Azure Pipelines
 
 stages: 
 
-- stage: BuildApp
-  jobs: 
-  - job : BuildTheApplication
-    steps:
-      -  task: NodeTool@0
-         inputs:
-            versionSpec: '12.x'
-      - task: Npm@1
-        inputs:
-          command: 'install'
-          workingDir: 'app'
-      - task: Npm@1
-        inputs:
-          command: 'custom'
-          workingDir: 'app'
-          customCommand: 'run build'
+#- stage: BuildApp
+#  jobs: 
+#  - job : BuildTheApplication
+#    steps:
+#      -  task: NodeTool@0
+#         inputs:
+#            versionSpec: '12.x'
+#      - task: Npm@1
+#        inputs:
+#          command: 'install'
+#          workingDir: 'app'
+#      - task: Npm@1
+#        inputs:
+#          command: 'custom'
+#          workingDir: 'app'
+#          customCommand: 'run build'
 
 - stage: TestTheApplication
   jobs: 
@@ -57,7 +57,7 @@ stages:
              Additional properties that will be passed to the scanner, 
              Put one key=value per line, example:
              sonar.exclusions=**/*.bin
-             sonar.javascript.lcov.reportPaths=$(Build.SourcesDirectory)/app/coverage/lcov.info
+             sonar.javascript.lcov.reportPaths=$(System.DefaultWorkingDirectory)/app/coverage/lcov.info
   
       - script: |
           FILTERED_PARAMS=$(echo $SONARQUBE_SCANNER_PARAMS | sed 's/"sonar.branch.name":"[^"]*"\,//g')
@@ -72,13 +72,13 @@ stages:
            pollingTimeoutSec: '300'
   
   
-- stage : BuildPushDockerImage
-  jobs : 
-  - job : BuildPushDockerImage
-    steps:
-      - task: Docker@2
-        inputs:
-          containerRegistry: 'DockerHub'
-          repository: 'abdelrhmanhamdy/react'
-          command: 'buildAndPush'
-          Dockerfile: 'app/Dockerfile'
+#- stage : BuildPushDockerImage
+#  jobs : 
+#  - job : BuildPushDockerImage
+#    steps:
+#      - task: Docker@2
+#        inputs:
+#          containerRegistry: 'DockerHub'
+#          repository: 'abdelrhmanhamdy/react'
+#          command: 'buildAndPush'
+#          Dockerfile: 'app/Dockerfile'
